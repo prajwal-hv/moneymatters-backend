@@ -4,6 +4,7 @@ import com.prajwal.moneymatters.Model.User;
 import com.prajwal.moneymatters.Model.UserRole;
 import com.prajwal.moneymatters.dto.UserRegisterRequest;
 import com.prajwal.moneymatters.dto.UserResponse;
+import com.prajwal.moneymatters.exception.BadRequestException;
 import com.prajwal.moneymatters.repository.UserRepository;
 import com.prajwal.moneymatters.service.UserService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -25,11 +26,11 @@ public class UserServiceImpl implements UserService {
     public UserResponse register(UserRegisterRequest request) {
 
         if (userRepository.existsByUserName(request.getUserName())) {
-            throw new IllegalArgumentException("Username already exists");
+            throw new BadRequestException("Username already exists");
         }
 
         if (userRepository.existsByEmail(request.getEmail())) {
-            throw new IllegalArgumentException("Email already exists");
+            throw new BadRequestException("Email already exists");
         }
 
         User user = new User();
