@@ -49,4 +49,11 @@ public class UserServiceImpl implements UserService {
                 saved.getCreatedAt()
         );
     }
+
+    @Override
+    public User findByUsername(String username){
+        return userRepository.findByUserName(username)
+                .orElseThrow(()->
+                        new IllegalArgumentException("User not found :: "+ username));
+    }
 }
