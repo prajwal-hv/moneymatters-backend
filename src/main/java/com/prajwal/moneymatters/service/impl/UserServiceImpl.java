@@ -56,4 +56,11 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(()->
                         new IllegalArgumentException("User not found :: "+ username));
     }
+
+    @Override
+    public UserResponse getCurrnetUser(String name) {
+        User user = findByUsername(name);
+        return new UserResponse(user.getId(), user.getUserName(), user.getEmail(), user.getRole(), user.getCreatedAt());
+
+    }
 }

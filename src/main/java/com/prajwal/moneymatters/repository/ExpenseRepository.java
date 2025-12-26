@@ -2,15 +2,18 @@ package com.prajwal.moneymatters.repository;
 
 import com.prajwal.moneymatters.Model.Expense;
 import com.prajwal.moneymatters.Model.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+
 
 import java.math.BigDecimal;
 import java.util.List;
 
 public interface ExpenseRepository extends JpaRepository<Expense, Long> {
 
-    List<Expense> findByUser(User user);
+    Page<Expense> findByUser(User user, Pageable pageable);
 
     @Query("""
 SELECT COALESCE(SUM(e.amount), 0)

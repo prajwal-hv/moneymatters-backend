@@ -11,9 +11,12 @@ import com.prajwal.moneymatters.exception.ResourceNotFoundException;
 import com.prajwal.moneymatters.repository.ExpenseRepository;
 import com.prajwal.moneymatters.service.ExpenseService;
 import com.prajwal.moneymatters.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
@@ -22,6 +25,7 @@ import java.util.Map;
 @Service
 public class ExpenseServiceImpl implements ExpenseService {
 
+    private static final Logger log = LoggerFactory.getLogger(ExpenseServiceImpl.class);
     private final ExpenseRepository expenseRepository;
     private final UserService userService;
 
@@ -32,6 +36,9 @@ public class ExpenseServiceImpl implements ExpenseService {
 
     @Override
     public ExpenseResponse create(CreateExpenseRequest request) {
+
+        log.info("Create Request"+request.toString());
+
         String username = SecurityContextHolder.getContext()
                 .getAuthentication()
                 .getName();
@@ -42,7 +49,7 @@ public class ExpenseServiceImpl implements ExpenseService {
         expense.setTitle(request.getTitle());
         expense.setAmount(request.getAmount());
         expense.setCategory(request.getCategory());
-        expense.setExpenseDate(request.getExpenseDate());
+        expense.setExpenseDate(request.getDate());
         expense.setUser(user);
 
         Expense saved = expenseRepository.save(expense);
@@ -56,22 +63,19 @@ public class ExpenseServiceImpl implements ExpenseService {
     }
 
     @Override
-    public List<ExpenseResponse> getMyExpenses() {
+    public Page<ExpenseResponse> getMyExpenses(Pageable pageable) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
 
         User user = userService.findByUsername(username);
 
-        return expenseRepository.findByUser(user)
-
-                .stream()
+        return expenseRepository.findByUser(user, pageable)
                 .map(e -> new ExpenseResponse(
                         e.getId(),
                         e.getTitle(),
                         e.getCategory(),
                         e.getAmount(),
                         e.getExpenseDate()
-                ))
-                .toList();
+                ));
     }
 
     @Override
@@ -134,4 +138,6 @@ public class ExpenseServiceImpl implements ExpenseService {
 
         return new MonthlyExpenseSummaryResponse(year, month, total, byCategory);
     }
+
+
 }

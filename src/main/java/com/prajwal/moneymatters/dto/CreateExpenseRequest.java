@@ -1,9 +1,9 @@
 package com.prajwal.moneymatters.dto;
 
+import com.prajwal.moneymatters.Model.ExpenseCategory;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
-import org.springframework.cglib.core.Local;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -16,11 +16,11 @@ public class CreateExpenseRequest {
     @Positive
     private BigDecimal amount;
 
-    @NotBlank
-    private String category;
+    @NotNull
+    private ExpenseCategory category;
 
     @NotNull
-    private LocalDate expenseDate;
+    private LocalDate date;
 
     public String getTitle() {
         return title;
@@ -38,19 +38,29 @@ public class CreateExpenseRequest {
         this.amount = amount;
     }
 
-    public String getCategory() {
+    public @NotNull ExpenseCategory getCategory() {
         return category;
     }
 
-    public void setCategory(String category) {
+    public void setCategory(@NotNull ExpenseCategory category) {
         this.category = category;
     }
 
-    public LocalDate getExpenseDate() {
-        return expenseDate;
+    public LocalDate getDate() {
+        return date;
     }
 
-    public void setExpenseDate(LocalDate expenseDate) {
-        this.expenseDate = expenseDate;
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
+
+    @Override
+    public String toString() {
+        return "CreateExpenseRequest{" +
+                "title='" + title + '\'' +
+                ", amount=" + amount +
+                ", category=" + category +
+                ", date=" + date +
+                '}';
     }
 }

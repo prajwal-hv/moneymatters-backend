@@ -1,5 +1,6 @@
 package com.prajwal.moneymatters.dto;
 
+import com.prajwal.moneymatters.Model.ExpenseCategory;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -16,7 +17,7 @@ public class UpdateExpenseRequest {
     private BigDecimal amount;
 
     @NotBlank
-    private String category;
+    private ExpenseCategory category;
 
     @NotNull
     private LocalDate expenseDate;
@@ -37,11 +38,11 @@ public class UpdateExpenseRequest {
         this.amount = amount;
     }
 
-    public String getCategory() {
+    public ExpenseCategory getCategory() {
         return category;
     }
 
-    public void setCategory(String category) {
+    public void setCategory(ExpenseCategory category) {
         this.category = category;
     }
 

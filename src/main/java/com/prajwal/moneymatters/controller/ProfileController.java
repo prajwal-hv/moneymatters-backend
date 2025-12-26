@@ -1,5 +1,7 @@
 package com.prajwal.moneymatters.controller;
 
+import com.prajwal.moneymatters.dto.UserResponse;
+import com.prajwal.moneymatters.service.UserService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,6 +13,11 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/profile")
 public class ProfileController {
+    private final UserService userService;
+
+    public ProfileController(UserService userService) {
+        this.userService = userService;
+    }
 
     @GetMapping
     public Map<String, Object> getProfile(){
@@ -20,6 +27,11 @@ public class ProfileController {
                 "username", authentication.getName(),
                 "authorities", authentication.getAuthorities()
         );
+    }
+
+    @GetMapping("/me")
+    public UserResponse me(Authentication authentication){
+         return userService.getCurrnetUser(authentication.getName());
     }
 
 }

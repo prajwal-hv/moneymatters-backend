@@ -10,4 +10,6 @@ public interface UserService {
      UserResponse register(UserRegisterRequest request);
 
      User findByUsername(String username);
+
+    UserResponse getCurrnetUser(String name);
 }

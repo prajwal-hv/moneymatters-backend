@@ -21,7 +21,7 @@ public class Expense {
     private BigDecimal amount;
 
     @Column(nullable = false)
-    private String category;
+    private ExpenseCategory category;
 
     @Column(nullable = false)
     private LocalDate expenseDate;
@@ -71,11 +71,11 @@ public class Expense {
         this.amount = amount;
     }
 
-    public String getCategory() {
+    public ExpenseCategory getCategory() {
         return category;
     }
 
-    public void setCategory(String category) {
+    public void setCategory(ExpenseCategory category) {
         this.category = category;
     }
 

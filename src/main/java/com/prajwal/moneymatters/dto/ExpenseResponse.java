@@ -1,6 +1,8 @@
 package com.prajwal.moneymatters.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.prajwal.moneymatters.Model.Expense;
+import com.prajwal.moneymatters.Model.ExpenseCategory;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -10,15 +12,17 @@ public class ExpenseResponse {
     private Long id;
     private String title;
     private BigDecimal amount;
-    private String category;
-    private LocalDate expenseDate;
+    private ExpenseCategory category;
 
-    public ExpenseResponse(Long id, String title, String category, BigDecimal amount, LocalDate expenseDate) {
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    private LocalDate date;
+
+    public ExpenseResponse(Long id, String title, ExpenseCategory category, BigDecimal amount, LocalDate date) {
         this.id = id;
         this.title = title;
         this.category = category;
         this.amount = amount;
-        this.expenseDate = expenseDate;
+        this.date = date;
     }
 
     public ExpenseResponse(Expense expense){
@@ -26,7 +30,7 @@ public class ExpenseResponse {
         this.title = expense.getTitle();
         this.category = expense.getCategory();
         this.amount = expense.getAmount();
-        this.expenseDate = expense.getExpenseDate();
+        this.date = expense.getExpenseDate();
     }
 
     public Long getId() {
@@ -41,11 +45,11 @@ public class ExpenseResponse {
         return amount;
     }
 
-    public String getCategory() {
+    public ExpenseCategory getCategory() {
         return category;
     }
 
-    public LocalDate getExpenseDate() {
-        return expenseDate;
+    public LocalDate getDate() {
+        return date;
     }
 }
