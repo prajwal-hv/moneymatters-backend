@@ -1,5 +1,7 @@
 package com.prajwal.moneymatters.dto;
 
+import com.prajwal.moneymatters.Model.Expense;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
@@ -17,6 +19,14 @@ public class ExpenseResponse {
         this.category = category;
         this.amount = amount;
         this.expenseDate = expenseDate;
+    }
+
+    public ExpenseResponse(Expense expense){
+        this.id = expense.getId();
+        this.title = expense.getTitle();
+        this.category = expense.getCategory();
+        this.amount = expense.getAmount();
+        this.expenseDate = expense.getExpenseDate();
     }
 
     public Long getId() {
