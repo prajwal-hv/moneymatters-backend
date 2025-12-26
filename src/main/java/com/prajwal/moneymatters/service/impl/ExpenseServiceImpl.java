@@ -4,6 +4,7 @@ import com.prajwal.moneymatters.Model.Expense;
 import com.prajwal.moneymatters.Model.User;
 import com.prajwal.moneymatters.dto.CreateExpenseRequest;
 import com.prajwal.moneymatters.dto.ExpenseResponse;
+import com.prajwal.moneymatters.dto.MonthlyExpenseSummaryResponse;
 import com.prajwal.moneymatters.dto.UpdateExpenseRequest;
 import com.prajwal.moneymatters.exception.BadRequestException;
 import com.prajwal.moneymatters.exception.ResourceNotFoundException;
@@ -13,7 +14,10 @@ import com.prajwal.moneymatters.service.UserService;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class ExpenseServiceImpl implements ExpenseService {
@@ -110,5 +114,24 @@ public class ExpenseServiceImpl implements ExpenseService {
 
         expenseRepository.delete(expense);
 
+    }
+
+    @Override
+    public MonthlyExpenseSummaryResponse getMonthlySummary(int year, int month){
+        String userName = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userService.findByUsername(userName);
+        BigDecimal total = expenseRepository.getMonthlyTotal(user, year, month);
+
+        List<Object[]> rows = expenseRepository.getMonthlyTotalByCategory(user, year, month);
+
+        Map<String, BigDecimal> byCategory = new HashMap<>();
+        for(Object[] row: rows){
+            byCategory.put(
+                    (String) row[0],
+                    (BigDecimal) row[1]
+            );
+        }
+
+        return new MonthlyExpenseSummaryResponse(year, month, total, byCategory);
     }
 }

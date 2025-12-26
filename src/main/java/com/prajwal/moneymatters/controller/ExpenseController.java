@@ -3,6 +3,7 @@ package com.prajwal.moneymatters.controller;
 
 import com.prajwal.moneymatters.dto.CreateExpenseRequest;
 import com.prajwal.moneymatters.dto.ExpenseResponse;
+import com.prajwal.moneymatters.dto.MonthlyExpenseSummaryResponse;
 import com.prajwal.moneymatters.dto.UpdateExpenseRequest;
 import com.prajwal.moneymatters.service.ExpenseService;
 import jakarta.validation.Valid;
@@ -38,5 +39,10 @@ public class ExpenseController {
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id){
         expenseService.delete(id);
+    }
+
+    @GetMapping("/summary/monthly")
+    public MonthlyExpenseSummaryResponse getMonthlySummary(@RequestParam int year, @RequestParam int month){
+        return expenseService.getMonthlySummary(year, month);
     }
 }
